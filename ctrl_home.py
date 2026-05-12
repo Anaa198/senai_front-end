@@ -13,14 +13,32 @@ bp = Blueprint(__name__, "HomeController")
 @bp.route("/") # cria uma rota
 def index(): # função que gerencia rota
     """ Página inicial"""
-    if 'user' not in session:
+    if '_user_id' not in session:
         return redirect(url_for("auth.login"))
     
     return render_template("dashboard/index.html") # Renderiza um template
-    
-@bp.route("/dashboard") # cria uma rota para navegardor http://127.0.0.1:5000/dashboard
+
+
+@bp.route("/dashboard") # cria uma rota para navegador http://127.0.0.1:5000/dashboard
 def dashboard(): # função que gerencia rota deve ser única
     """ Painel de vendas"""
     # remova o login
-    return render_template("dashboard/index.html") # Renderiza um template
-    
+    import locale
+    # define a localização para portugues brasileiro 
+    locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
+    vendas : list = [
+        {"mes":"Janeiro", "total":139519.19}, 
+        {"mes":"Fevereiro", "total":154306.36},
+        {"mes":"Março", "total":188635.64},
+        {"mes":"Abril", "total":193654.66},
+        {"mes":"Maio", "total":187654.57},
+        {"mes":"Junho", "total":276659.65},
+        {"mes":"Julho", "total":268805.87},
+        {"mes":"Agosto", "total":234568.19},
+        {"mes":"Setembro", "total":136754.76},
+        {"mes":"Outubro", "total":247965.99},
+        {"mes":"Novembro", "total":134567.99},
+        {"mes":"Dezembro", "total":299543.89},
+    ] #fim lista vendas           
+
+    return render_template("dashboard/index.html" , title="Painel de vendas", vendas=vendas, locale=locale) # Renderiza um template
